@@ -24,6 +24,26 @@ const createNewOrderController = async (req: Request, res: Response) => {
   }
 };
 
+// get all orders controller
+const getAllOrdersController = async (req: Request, res: Response) => {
+  try {
+    const result = await ordersServices.getAllOrdersFromDB();
+
+    res.status(400).json({
+      success: true,
+      message: 'Orders fetched successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong',
+      error: error,
+    });
+  }
+};
+
 export const orderController = {
   createNewOrderController,
+  getAllOrdersController,
 };

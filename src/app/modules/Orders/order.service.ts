@@ -24,21 +24,21 @@ const createNewOrderFromDB = async (order: TOrderInterface) => {
   ) {
     throw new Error('Insufficient quantity available in inventory');
   } else {
-    const newAvailableProductQuantity: number =
+    const newQuantity: number =
       <number>availableProductsQuantity - order?.quantity;
 
     let updateProducts;
-    if (newAvailableProductQuantity > 0) {
+    if (newQuantity > 0) {
       updateProducts = {
         inventory: {
-          quantity: newAvailableProductQuantity,
+          quantity: newQuantity,
           inStock: true,
         },
       };
     } else {
       updateProducts = {
         inventory: {
-          quantity: newAvailableProductQuantity,
+          quantity: newQuantity,
           inStock: false,
         },
       };
@@ -53,6 +53,13 @@ const createNewOrderFromDB = async (order: TOrderInterface) => {
   }
 };
 
+// get all orders logic
+const getAllOrdersFromDB = async () => {
+  const result = await OrderManagement.find();
+  return result;
+};
+
 export const ordersServices = {
   createNewOrderFromDB,
+  getAllOrdersFromDB,
 };
