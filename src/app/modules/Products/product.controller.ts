@@ -29,11 +29,20 @@ const createNewProduct = async (req: Request, res: Response) => {
 // get all products controller
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductService.getAllProductFromDB();
+    const searchTerm = req.query.searchTerm as string;
+    const result = await ProductService.getAllProductFromDB(searchTerm);
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No products found matching search term '${searchTerm}'`,
+        data: [],
+      });
+    }
 
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: `Products${searchTerm ? ` matching search term '${searchTerm}'` : ''} fetched successfully!`,
       data: result,
     });
   } catch (error: any) {
