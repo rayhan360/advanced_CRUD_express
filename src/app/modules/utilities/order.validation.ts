@@ -1,8 +1,18 @@
+import { Types } from 'mongoose';
 import { z } from 'zod';
+
+const productIdValidate = z.custom<Types.ObjectId>(
+  (value) => {
+    return Types.ObjectId.isValid(value);
+  },
+  {
+    message: 'Invalid product ID',
+  },
+);
 
 export const OrderValidationSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
-  productId: z.string().min(1, { message: 'Product ID is required' }),
+  productId: productIdValidate,
   price: z.number().positive({ message: 'Price must be a positive number' }),
   quantity: z
     .number()

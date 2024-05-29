@@ -32,7 +32,7 @@ const getSingleProductById = async (_id: string) => {
 };
 
 // update product by id
-const updateProductById = async (_id: string, product: TProducts) => {
+const updateProductById = async (_id: string, product: Partial<TProducts>) => {
   const result = await Product.findByIdAndUpdate(_id, product, { new: true });
   return result;
 };
