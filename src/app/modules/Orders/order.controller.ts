@@ -27,11 +27,20 @@ const createNewOrderController = async (req: Request, res: Response) => {
 // get all orders controller
 const getAllOrdersController = async (req: Request, res: Response) => {
   try {
-    const result = await ordersServices.getAllOrdersFromDB();
+    let result;
+    const userEmail = req.query.email;
+
+    if (userEmail) {
+      result = await ordersServices.getAllOrdersByEmail(userEmail as string);
+    } else {
+      result = await ordersServices.getAllOrdersFromDB();
+    }
 
     res.status(400).json({
       success: true,
-      message: 'Orders fetched successfully!',
+      message: userEmail
+        ? 'Orders fetched successfully for user email!'
+        : 'Orders fetched successfully!',
       data: result,
     });
   } catch (error: any) {

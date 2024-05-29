@@ -59,7 +59,14 @@ const getAllOrdersFromDB = async () => {
   return result;
 };
 
+// get single order by user email
+const getAllOrdersByEmail = async (email: string) => {
+  const result = await OrderManagement.find({ email });
+  return result;
+};
+
 export const ordersServices = {
   createNewOrderFromDB,
   getAllOrdersFromDB,
+  getAllOrdersByEmail,
 };
