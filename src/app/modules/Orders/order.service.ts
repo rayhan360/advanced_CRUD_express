@@ -10,7 +10,7 @@ const createNewOrderFromDB = async (order: TOrderInterface) => {
 
   // not found order product error message
   if (!getSingleProductFromProductDB) {
-    throw new Error('Product not found');
+    throw new Error('Order not found');
   }
 
   const availableProductsQuantity: number = <number>(
@@ -49,6 +49,12 @@ const createNewOrderFromDB = async (order: TOrderInterface) => {
     );
 
     const result = await OrderManagement.create(order);
+
+    // If the order creation fails, throw an error
+    if (!result) {
+      throw new Error('Order creation failed');
+    }
+
     return result;
   }
 };
